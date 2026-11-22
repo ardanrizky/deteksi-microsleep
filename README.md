@@ -6,14 +6,14 @@ Sistem deteksi tanda-tanda kantuk (*microsleep*) pada pengemudi menggunakan pend
 
 ---
 
-## 📌 Tujuan Proyek
+## Tujuan Proyek
 - Mendeteksi kondisi mata (terbuka / tertutup).
 - Mendeteksi kondisi mulut (menguap / tidak menguap).
 - Memberikan peringatan dini (*early warning*) jika pengemudi terindikasi mengantuk atau mengalami microsleep demi mencegah kecelakaan.
 
 ---
 
-## 📂 Dataset
+## Dataset
 Dataset terbagi menjadi 4 kelas:
 1. `Closed_Eyes` (Mata Tertutup)
 2. `Open_Eyes` (Mata Terbuka)
@@ -27,18 +27,16 @@ Dataset/
 ├── Val/
 └── Test/
 ```
-*(Catatan: Folder `Dataset/` diabaikan oleh `.gitignore` karena ukuran file besar).*
-
 ---
 
-## 🚀 Alur Kerja Sistem
+## Alur Kerja Sistem
 1. **Pre-processing & Model Training:** Pelatihan model Neuro Computing (CNN) menggunakan dataset citra mata dan mulut.
 2. **Evaluasi Model:** Pengujian performa model dengan metrik akurasi, loss, dan confusion matrix.
 3. **Aplikasi Demo (Web):** Implementasi model ke aplikasi web untuk demo deteksi langsung melalui upload gambar maupun webcam real-time.
 
 ---
 
-## 👥 Anggota Kelompok 7
+## Anggota Kelompok 7
 - [Nama / NRP]
 - [Nama / NRP]
 - [Nama / NRP]
