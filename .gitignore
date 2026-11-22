@@ -1,0 +1,25 @@
+# Dataset (ukuran besar, jangan di-push ke GitHub)
+Dataset/
+dataset/
+*.zip
+*.tar.gz
+
+# Python cache & virtualenv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Model checkpoints (opsional jika file model > 100MB)
+models/*.h5
+models/*.pth
+models/*.pt
+models/*.onnx
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
