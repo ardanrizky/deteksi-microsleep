@@ -39,7 +39,8 @@ Dataset/
 ---
 
 ## 👥 Anggota Kelompok 7
-- [Nama / NRP]
-- [Nama / NRP]
-- [Nama / NRP]
-- [Nama / NRP]
+- [@ardanrizky](https://github.com/ardanrizky)
+- [@naufalhilmidh](https://github.com/naufalhilmidh)
+- [@alkayyiss-ds](https://github.com/alkayyiss-ds)
+- [@LeandroJovan](https://github.com/LeandroJovan)
+
