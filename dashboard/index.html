@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Safety Guardian | Dashboard Pemantau Kantuk Pengemudi</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- Top Navigation Header -->
+  <header class="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-900 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Logo & Title -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-blue-400 shadow-inner">
+            <i data-lucide="shield-alert" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-bold text-lg tracking-tight">Fleet Safety Guardian</span>
+              <span class="text-xs bg-blue-500/30 text-blue-200 px-2 py-0.5 rounded-full border border-blue-400/30 font-medium">Neuro Computing</span>
+            </div>
+            <p class="text-xs text-slate-300">Pusat Pemantau Kewaspadaan Pengemudi Armada • Kelompok 7</p>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="hidden md:flex space-x-1 bg-slate-800/60 p-1 rounded-xl border border-slate-700/50">
+          <button class="nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 shadow-sm transition">Ringkasan</button>
+          <button class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition">Log Kejadian</button>
+          <button class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition">Sesi Armada</button>
+          <button class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white transition">Pengaturan Unit</button>
+        </nav>
+
+        <!-- Unit Info & Online Status -->
+        <div class="flex items-center space-x-4">
+          <div class="hidden sm:block text-right">
+            <div class="text-xs font-semibold text-slate-200 flex items-center justify-end space-x-1">
+              <i data-lucide="truck" class="w-3.5 h-3.5 text-blue-400"></i>
+              <span>Unit-01</span>
+              <span class="text-slate-400 font-normal">(Anon-D7F3A)</span>
+            </div>
+            <div id="liveClock" class="text-[11px] text-slate-400 font-mono">--:--:-- WIB</div>
+          </div>
+          
+          <div class="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-full">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span class="text-xs font-semibold text-emerald-400">Online</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Dashboard -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- 4 Summary Metric Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      
+      <!-- Card 1: Sesi Hari Ini -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:shadow-md transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Sesi Hari Ini</p>
+            <h3 class="text-2xl font-extrabold text-slate-800 mt-1">3 Sesi</h3>
+            <p class="text-xs text-blue-600 font-medium mt-1 flex items-center">
+              <i data-lucide="clock" class="w-3.5 h-3.5 mr-1"></i> Total durasi 5j 20m
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <i data-lucide="route" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Microsleep (Level 2) -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-rose-100 hover:shadow-md transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-rose-500">Alarm Level 2 (Microsleep)</p>
+            <h3 class="text-2xl font-extrabold text-rose-600 mt-1">2 Kejadian</h3>
+            <p class="text-xs text-rose-600 font-medium mt-1 flex items-center">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 mr-1"></i> Respon alarm kabin: 100%
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+            <i data-lucide="eye-off" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Frekuensi Alarm / Jam -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:shadow-md transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Frekuensi Alarm</p>
+            <h3 class="text-2xl font-extrabold text-slate-800 mt-1">0.8 / jam</h3>
+            <p class="text-xs text-emerald-600 font-medium mt-1 flex items-center">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 mr-1"></i> Di bawah ambang waspada (< 1.0)
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <i data-lucide="gauge" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4: FPS Kamera Unit -->
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 hover:shadow-md transition">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Performa Kamera Unit</p>
+            <h3 class="text-2xl font-extrabold text-slate-800 mt-1">22 FPS</h3>
+            <p class="text-xs text-emerald-600 font-medium mt-1 flex items-center">
+              <i data-lucide="cpu" class="w-3.5 h-3.5 mr-1"></i> Stabil di CPU Laptop (MediaPipe)
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+            <i data-lucide="video" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Main Grid: Chart & Real-Time Events -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Left Column (Chart): 8 Cols -->
+      <div class="lg:col-span-8 bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col justify-between">
+        <div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-2">
+            <div>
+              <h2 class="text-base font-bold text-slate-800">Tren Tingkat Kewaspadaan & Kejadian Alarm</h2>
+              <p class="text-xs text-slate-500">Fluktuasi indikator kantuk dan kejadian alarm microsleep sepanjang rute perjalanan</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="inline-flex items-center text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">
+                <span class="w-2 h-2 rounded-full bg-blue-600 mr-1.5"></span> Indeks Kantuk
+              </span>
+              <span class="inline-flex items-center text-xs font-medium text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md">
+                <span class="w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span> Titik Alarm
+              </span>
+            </div>
+          </div>
+
+          <!-- Chart Canvas Container -->
+          <div class="mt-4 relative h-72 w-full">
+            <canvas id="drowsinessChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Chart Footer Notes -->
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <div class="flex items-center space-x-1 text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md">
+            <i data-lucide="info" class="w-3.5 h-3.5 mr-1 text-amber-500"></i>
+            <span>Garis oranye menandai ambang batas waspada (Threshold: 0.15)</span>
+          </div>
+          <span>Pembaruan otomatis tiap sesi</span>
+        </div>
+      </div>
+
+      <!-- Right Column (Event Feed): 4 Cols -->
+      <div class="lg:col-span-4 bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div>
+            <h2 class="text-base font-bold text-slate-800">Event Terbaru</h2>
+            <p class="text-xs text-slate-500">Umpan log langsung dari kabin Unit-01</p>
+          </div>
+          <span class="text-xs font-semibold bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full border border-blue-200">Real-time</span>
+        </div>
+
+        <!-- Event List -->
+        <div class="mt-4 space-y-3 flex-1 overflow-y-auto max-h-[300px] pr-1">
+          
+          <!-- Event 1: Microsleep (Merah) -->
+          <div class="event-card border-l-4 border-rose-500 bg-rose-50/50 hover:bg-rose-50 p-3 rounded-r-xl transition">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-rose-700 bg-rose-200/60 px-2 py-0.5 rounded">Level 2 • Microsleep</span>
+              <span class="text-[11px] text-slate-500 font-mono">08:15 WIB</span>
+            </div>
+            <p class="text-xs font-semibold text-slate-800 mt-1">Mata terpejam selama 1.8 detik</p>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-rose-200/50 text-[11px] text-slate-500">
+              <span>Confidence: 94.8%</span>
+              <button onclick="showDetail('Microsleep Terdeteksi', 'Mata terpejam beruntun 1.8 detik pada kecepatan 68 km/jam di Tol Cipali. Alarm kabin otomatis aktif.')" class="text-rose-600 font-semibold hover:underline">Detail</button>
+            </div>
+          </div>
+
+          <!-- Event 2: Menguap (Kuning) -->
+          <div class="event-card border-l-4 border-amber-500 bg-amber-50/50 hover:bg-amber-50 p-3 rounded-r-xl transition">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800 bg-amber-200/60 px-2 py-0.5 rounded">Level 1 • Menguap</span>
+              <span class="text-[11px] text-slate-500 font-mono">08:02 WIB</span>
+            </div>
+            <p class="text-xs font-semibold text-slate-800 mt-1">Mulut terbuka lebar 1.6 detik</p>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-amber-200/50 text-[11px] text-slate-500">
+              <span>Confidence: 91.2%</span>
+              <button onclick="showDetail('Peringatan Menguap', 'Terdeteksi menguap beruntun 1.6 detik. Peringatan lembut kabin berbunyi menyarankan istirahat.')" class="text-amber-700 font-semibold hover:underline">Detail</button>
+            </div>
+          </div>
+
+          <!-- Event 3: Wajah Hilang (Abu-abu) -->
+          <div class="event-card border-l-4 border-slate-400 bg-slate-50 hover:bg-slate-100 p-3 rounded-r-xl transition">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-700 bg-slate-200 px-2 py-0.5 rounded">Wajah Hilang</span>
+              <span class="text-[11px] text-slate-500 font-mono">07:31 WIB</span>
+            </div>
+            <p class="text-xs font-semibold text-slate-800 mt-1">Wajah tidak menghadap kamera (>3 dtk)</p>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-200 text-[11px] text-slate-500">
+              <span>Status: Kamera terhalang / menoleh</span>
+              <button onclick="showDetail('Wajah Hilang', 'Wajah pengemudi menoleh keluar jangkauan sudut pandang kamera MediaPipe selama lebih dari 3 detik.')" class="text-slate-600 font-semibold hover:underline">Detail</button>
+            </div>
+          </div>
+
+          <!-- Event 4: Microsleep (Merah) -->
+          <div class="event-card border-l-4 border-rose-500 bg-rose-50/50 hover:bg-rose-50 p-3 rounded-r-xl transition">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-rose-700 bg-rose-200/60 px-2 py-0.5 rounded">Level 2 • Microsleep</span>
+              <span class="text-[11px] text-slate-500 font-mono">06:45 WIB</span>
+            </div>
+            <p class="text-xs font-semibold text-slate-800 mt-1">Mata terpejam selama 2.1 detik</p>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-rose-200/50 text-[11px] text-slate-500">
+              <span>Confidence: 96.1%</span>
+              <button onclick="showDetail('Microsleep Terdeteksi', 'Mata terpejam 2.1 detik. Alarm keras kabin menyala dan pengemudi segera merespons membuka mata.')" class="text-rose-600 font-semibold hover:underline">Detail</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Bottom Section: Fleet Status Table -->
+    <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+        <div>
+          <h2 class="text-base font-bold text-slate-800">Status Perangkat Armada Terpantau</h2>
+          <p class="text-xs text-slate-500">Daftar unit kendaraan dan kondisi komunikasi data ke server pusat</p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button id="btnExportCsv" class="inline-flex items-center text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-lg transition">
+            <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5 text-slate-600"></i> Unduh Log CSV
+          </button>
+          <button onclick="alert('Sinkronisasi data unit berhasil!')" class="inline-flex items-center text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-lg shadow-sm transition">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 mr-1.5"></i> Segarkan Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="text-slate-400 font-semibold border-b border-slate-100 pb-2">
+              <th class="py-2.5 px-3">ID UNIT</th>
+              <th class="py-2.5 px-3">PENGEMUDI</th>
+              <th class="py-2.5 px-3">STATUS PERANGKAT</th>
+              <th class="py-2.5 px-3">SINYAL / HEARTBEAT</th>
+              <th class="py-2.5 px-3">MODEL INFERENSI</th>
+              <th class="py-2.5 px-3 text-right">AKSI</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
+            
+            <!-- Row 1: Unit-01 (Aktif) -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-3 px-3 font-bold text-slate-900 flex items-center space-x-2">
+                <i data-lucide="truck" class="w-4 h-4 text-blue-600"></i>
+                <span>Unit-01</span>
+              </td>
+              <td class="py-3 px-3">Anon-D7F3A (Shift Pagi)</td>
+              <td class="py-3 px-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Aktif
+                </span>
+              </td>
+              <td class="py-3 px-3 text-emerald-600 font-mono">5 detik lalu (Kuat)</td>
+              <td class="py-3 px-3">CNN Mata + CNN Mulut v1</td>
+              <td class="py-3 px-3 text-right">
+                <button onclick="alert('Unit-01 sedang berjalan normal di rute KM 114.')" class="text-blue-600 hover:text-blue-800 font-semibold">Kelola</button>
+              </td>
+            </tr>
+
+            <!-- Row 2: Unit-02 (Nonaktif) -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-3 px-3 font-bold text-slate-900 flex items-center space-x-2">
+                <i data-lucide="truck" class="w-4 h-4 text-slate-400"></i>
+                <span>Unit-02</span>
+              </td>
+              <td class="py-3 px-3">Anon-B4C12 (Pool Depo)</td>
+              <td class="py-3 px-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600">
+                  <span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span> Nonaktif
+                </span>
+              </td>
+              <td class="py-3 px-3 text-slate-400 font-mono">Selesai Shift Kerja</td>
+              <td class="py-3 px-3">CNN Mata + CNN Mulut v1</td>
+              <td class="py-3 px-3 text-right">
+                <button onclick="alert('Unit-02 parkir di depo pusat.')" class="text-slate-500 hover:text-slate-700 font-semibold">Riwayat</button>
+              </td>
+            </tr>
+
+            <!-- Row 3: Unit-03 (Terputus) -->
+            <tr class="hover:bg-slate-50 transition">
+              <td class="py-3 px-3 font-bold text-slate-900 flex items-center space-x-2">
+                <i data-lucide="truck" class="w-4 h-4 text-amber-500"></i>
+                <span>Unit-03</span>
+              </td>
+              <td class="py-3 px-3">Anon-K9X88 (Rute Tol)</td>
+              <td class="py-3 px-3">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span> Terputus
+                </span>
+              </td>
+              <td class="py-3 px-3 text-amber-600 font-mono">14 menit lalu (Sinyal Hilang)</td>
+              <td class="py-3 px-3">CNN Mata + CNN Mulut v1</td>
+              <td class="py-3 px-3 text-right">
+                <button onclick="alert('Buffer lokal unit-03 aktif menyimpan data offline.')" class="text-amber-700 hover:text-amber-900 font-semibold">Cek Buffer</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-8 py-4">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+      Proyek Praktikum Neuro Computing • Kelompok 7 (Ardan Rizky, Naufal Hilmi, Alkayyiss, Leandro Jovan) • PENS 2026
+    </div>
+  </footer>
+
+  <!-- Modal Pop-up Detail Kejadian -->
+  <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <h3 id="modalTitle" class="text-base font-bold text-slate-800">Detail Insiden</h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+      </div>
+      <p id="modalBody" class="text-sm text-slate-600 leading-relaxed">Deskripsi kejadian.</p>
+      <div class="pt-2 text-right">
+        <button onclick="closeModal()" class="bg-slate-800 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-slate-900 transition">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom JavaScript -->
+  <script src="js/app.js"></script>
+</body>
+</html>
+
